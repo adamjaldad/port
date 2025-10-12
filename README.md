@@ -1,0 +1,1 @@
+# Welcome! My goal is to analyze my personal portfolio. 
