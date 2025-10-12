@@ -22,6 +22,12 @@ PORTFOLIO = pd.DataFrame({
 
 BENCH = ["SPY","QQQ"]
 
+POLYGON_API_KEY = "zzlQUn41Goxb1mQR0lA1odVKLQ6pblFZ"
+EMAIL_USER      = "adamjaldad@gmail.com"
+EMAIL_PASS      = "tiql gusr ffnm holi"  # Gmail App Password
+EMAIL_TO        = os.getenv("EMAIL_TO", "adamjaldad@gmail.com")
+EMAIL_FROM      = EMAIL_USER 
+
 POLY_BASE = "https://api.polygon.io"
 
 # Rate limits (Polygon free tier is tight; be gentle)
@@ -119,7 +125,7 @@ def build_summary(port: pd.DataFrame, px: pd.DataFrame, session_as_of: str | Non
     day_pnl  = total_mv - total_pv
     day_pct  = (day_pnl / total_pv * 100.0) if total_pv else float("nan")
 
-    df["Weight"] = df["MarketValue"] / total_mv if total_mv else float("nan")
+    df["Weight"] = (df["MarketValue"] * 100) / total_mv if total_mv else float("nan")
 
     # Movers (by %)
     movers = df[df["DayChgPct"].notna()].copy()
