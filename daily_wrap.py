@@ -123,7 +123,7 @@ def build_summary(port: pd.DataFrame, px: pd.DataFrame, session_as_of: str | Non
     total_mv = float(df["MarketValue"].sum(skipna=True))
     total_pv = float(df["PrevValue"].sum(skipna=True))
     day_pnl  = total_mv - total_pv
-    day_pct  = (day_pnl / total_pv * 100.0) if total_pv else float("nan")
+    day_pct  = (day_pnl / total_pv) if total_pv else float("nan")
 
     df["Weight"] = (df["MarketValue"]) / total_mv if total_mv else float("nan")
 
@@ -144,9 +144,9 @@ def build_summary(port: pd.DataFrame, px: pd.DataFrame, session_as_of: str | Non
 
     # Flags
     flags = []
-    if abs(day_pct) > 2.0:
+    if abs(day_pct) > .02:
         flags.append(f"Portfolio move is large: {fmt_pct(day_pct)}.")
-    if (df["DayChgPct"].abs() > 5.0).sum() >= max(1, len(df)//6):
+    if (df["DayChgPct"].abs() > .05).sum() >= max(1, len(df)//6):
         flags.append("Many names moved >5% today.")
     if df["Price"].isna().any():
         flags.append("Some symbols missing quotes (API limits or tickers?).")
