@@ -20,13 +20,7 @@ PORTFOLIO = pd.DataFrame({
     "Shares" : [100,20,10,50,15,50,100,30,10,35,5,200,45,5,10,10,2,15,5,200,5,50,1,1],
 }).set_index("Ticker")
 
-BENCH = ["SPY","QQQ", "IWM"]
-
-POLYGON_API_KEY = "zzlQUn41Goxb1mQR0lA1odVKLQ6pblFZ"
-EMAIL_USER      = "adamjaldad@gmail.com"
-EMAIL_PASS      = "tiql gusr ffnm holi"  # Gmail App Password
-EMAIL_TO        = os.getenv("EMAIL_TO", "adamjaldad@gmail.com")
-EMAIL_FROM      = EMAIL_USER 
+BENCH = ["SPY","QQQ"]
 
 POLY_BASE = "https://api.polygon.io"
 
