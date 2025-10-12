@@ -40,7 +40,7 @@ TZ = ZoneInfo("America/Chicago")
 def fmt_pct(x, digits=2):
     if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
         return "—"
-    return f"{x:.{digits}f}%"
+    return f"{(x*100):.{digits}f}%"
 
 def fmt_usd(x, digits=2):
     if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
@@ -101,7 +101,7 @@ def robust_price_table_nearest_market_day(tickers: list[str]) -> pd.DataFrame:
                 price, prevc = (None, None)
             rows[t] = {"Price": price, "PrevClose": prevc}
     df = pd.DataFrame.from_dict(rows, orient="index")
-    df["DayChgPct"] = (df["Price"] / df["PrevClose"] - 1.0) * 100.0
+    df["DayChgPct"] = (df["Price"] / df["PrevClose"] - 1.0) 
     df.attrs["session_as_of"] = (
         datetime.fromtimestamp(session_ts_max/1000, tz=TZ).strftime("%Y-%m-%d")
         if session_ts_max else None
@@ -125,7 +125,7 @@ def build_summary(port: pd.DataFrame, px: pd.DataFrame, session_as_of: str | Non
     day_pnl  = total_mv - total_pv
     day_pct  = (day_pnl / total_pv * 100.0) if total_pv else float("nan")
 
-    df["Weight"] = (df["MarketValue"] * 100) / total_mv if total_mv else float("nan")
+    df["Weight"] = (df["MarketValue"]) / total_mv if total_mv else float("nan")
 
     # Movers (by %)
     movers = df[df["DayChgPct"].notna()].copy()
@@ -139,7 +139,7 @@ def build_summary(port: pd.DataFrame, px: pd.DataFrame, session_as_of: str | Non
 
     # Benchmarks on the same “nearest market day” logic
     bench_px = robust_price_table_nearest_market_day(BENCH)
-    bench_px["DayChgPct"] = (bench_px["Price"] / bench_px["PrevClose"] - 1.0) * 100.0
+    bench_px["DayChgPct"] = (bench_px["Price"] / bench_px["PrevClose"] - 1.0) 
     bench = {t: float(bench_px.loc[t, "DayChgPct"]) for t in BENCH if t in bench_px.index}
 
     # Flags
